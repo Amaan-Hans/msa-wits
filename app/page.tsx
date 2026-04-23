@@ -1,143 +1,10 @@
 import Image from "next/image";
 import { CardCarousel } from "./components/CardCarousel";
+import { LiveIslamicDate } from "./components/LiveIslamicDate";
+import { LivePrayerTimes } from "./components/LivePrayerTimes";
+import { LiveDailyContent } from "./components/LiveDailyContent";
 
-// ── Daily content types ────────────────────────────────────────────────────
-
-interface QuranVerse {
-  arabic: string;
-  translation: string;
-  surahName: string;
-  surahNumber: number;
-  ayahNumber: number;
-}
-
-interface DailyHadith {
-  text: string;
-  source: string;
-}
-
-function getDayOfYear(): number {
-  const now = new Date();
-  return Math.floor(
-    (now.getTime() - new Date(now.getFullYear(), 0, 0).getTime()) / 86400000
-  );
-}
-
-// AlQuran.cloud — free, no key required.
-// URL includes the verse number so force-cache rotates naturally each day.
-async function getDailyVerse(): Promise<QuranVerse | null> {
-  try {
-    const verseNum = (getDayOfYear() % 6236) + 1;
-    const res = await fetch(
-      `https://api.alquran.cloud/v1/ayah/${verseNum}/editions/quran-uthmani,en.sahih`,
-      { cache: 'force-cache' }
-    );
-    if (!res.ok) return null;
-    const json = await res.json();
-    const [arabic, english] = json.data as [
-      { text: string; surah: { englishName: string; number: number }; numberInSurah: number },
-      { text: string; surah: { englishName: string; number: number }; numberInSurah: number },
-    ];
-    return {
-      arabic: arabic.text,
-      translation: english.text,
-      surahName: english.surah.englishName,
-      surahNumber: english.surah.number,
-      ayahNumber: english.numberInSurah,
-    };
-  } catch {
-    return null;
-  }
-}
-
-// fawazahmed0 hadith-api via jsDelivr — free, no key required.
-// Response shape: { metadata: { name }, hadiths: [{ hadithnumber, text }] }
-async function getDailyHadith(): Promise<DailyHadith | null> {
-  try {
-    const hadithNum = (getDayOfYear() % 7563) + 1;
-    const res = await fetch(
-      `https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/eng-bukhari/${hadithNum}.json`,
-      { cache: 'force-cache' }
-    );
-    if (!res.ok) return null;
-    const json = await res.json() as {
-      metadata?: { name?: string };
-      hadiths?: Array<{ hadithnumber?: number; text?: string }>;
-    };
-    const hadith = json.hadiths?.[0];
-    if (!hadith?.text) return null;
-    return {
-      text: hadith.text,
-      source: `${json.metadata?.name ?? 'Sahih al-Bukhari'} · ${hadith.hadithnumber ?? hadithNum}`,
-    };
-  } catch {
-    return null;
-  }
-}
-
-// ── Prayer times types ─────────────────────────────────────────────────────
-
-interface AladhanTimings {
-  Fajr: string;
-  Sunrise: string;
-  Dhuhr: string;
-  Asr: string;
-  Maghrib: string;
-  Isha: string;
-}
-
-interface AladhanData {
-  timings: AladhanTimings;
-  date: {
-    readable: string;
-    hijri: {
-      day: string;
-      month: { en: string };
-      year: string;
-    };
-  };
-}
-
-async function getPrayerData(): Promise<AladhanData | null> {
-  try {
-    const timestamp = Math.floor(Date.now() / 1000);
-    const res = await fetch(
-      `https://api.aladhan.com/v1/timings/${timestamp}?latitude=-26.1929&longitude=28.0305&method=2`
-    );
-    if (!res.ok) return null;
-    const json = await res.json();
-    return json.data as AladhanData;
-  } catch {
-    return null;
-  }
-}
-
-export default async function HomePage() {
-  const [prayerData, verse, hadith] = await Promise.all([
-    getPrayerData(),
-    getDailyVerse(),
-    getDailyHadith(),
-  ]);
-  const timings = prayerData?.timings;
-  const hijri = prayerData?.date?.hijri;
-
-  const islamicDate = hijri
-    ? `${hijri.day} ${hijri.month.en} ${hijri.year} AH`
-    : null;
-
-  const isFriday = new Date().getDay() === 5;
-
-  const prayerTimes = timings
-    ? [
-        { name: "Fajr", time: timings.Fajr },
-        { name: "Sunrise", time: timings.Sunrise },
-        { name: "Dhuhr", time: timings.Dhuhr },
-        { name: "Asr", time: timings.Asr },
-        { name: "Maghrib", time: timings.Maghrib },
-        { name: "Isha", time: timings.Isha },
-      ]
-    : [];
-
+export default function HomePage() {
   const cards = [
     {
       title: "Arabic Classes",
@@ -261,26 +128,14 @@ export default async function HomePage() {
 
             {/* Info cards */}
             <div className="flex flex-col gap-4 lg:min-w-[240px]">
-              <div className="rounded-3xl border border-white/15 bg-white/10 p-6 backdrop-blur">
-                <p className="text-xs font-semibold uppercase tracking-widest text-[#8ecae6]">
-                  Islamic Date
-                </p>
-                {islamicDate ? (
-                  <>
-                    <p className="mt-2 text-xl font-semibold text-white">{islamicDate}</p>
-                    <p className="mt-1 text-sm text-[#8ecae6]/80">{prayerData?.date?.readable}</p>
-                  </>
-                ) : (
-                  <p className="mt-2 text-sm text-[#8ecae6]/60">Unavailable</p>
-                )}
-              </div>
+              <LiveIslamicDate />
 
               <div className="rounded-3xl border border-white/15 bg-white/10 p-6 backdrop-blur">
                 <p className="text-xs font-semibold uppercase tracking-widest text-[#8ecae6]">
-                  {isFriday ? "Jumu'ah Today" : "Jumu'ah"}
+                  Jumu&apos;ah
                 </p>
                 <p className="mt-2 text-xl font-semibold text-white">1:15 PM</p>
-                <p className="mt-1 text-sm text-[#8ecae6]/80">Main Campus Prayer Venue</p>
+                <p className="mt-1 text-sm text-[#8ecae6]/80">Wits Musalla, East Campus</p>
               </div>
 
               <div className="rounded-3xl border border-white/15 bg-white/10 p-6 backdrop-blur">
@@ -288,110 +143,16 @@ export default async function HomePage() {
                   Prayer Space
                 </p>
                 <p className="mt-2 text-xl font-semibold text-white">Open Daily</p>
-                <p className="mt-1 text-sm text-[#8ecae6]/80">Student Centre, Level 2</p>
+                <p className="mt-1 text-sm text-[#8ecae6]/80">Wits Musalla, East Campus</p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── Prayer Times ── */}
-      <section className="border-b border-slate-200 bg-white">
-        <div className="mx-auto max-w-7xl px-6 py-12 md:px-8">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#219ebc]">
-                Today&apos;s Prayer Times
-              </p>
-              <h2 className="mt-1 text-2xl font-semibold tracking-tight text-slate-900">
-                Johannesburg · Wits Campus
-              </h2>
-            </div>
-            {isFriday && (
-              <span className="inline-flex self-start rounded-full bg-[#8ecae6]/20 px-4 py-1.5 text-sm font-semibold text-[#023047] sm:self-auto">
-                Jumu&apos;ah Today · 1:15 PM
-              </span>
-            )}
-          </div>
+      <LivePrayerTimes />
 
-          {prayerTimes.length > 0 ? (
-            <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-              {prayerTimes.map(({ name, time }) => (
-                <div
-                  key={name}
-                  className="rounded-2xl border border-slate-100 bg-stone-50 p-4 text-center"
-                >
-                  <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-                    {name}
-                  </p>
-                  <p className="mt-2 text-xl font-semibold text-slate-900">{time}</p>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="mt-8 rounded-2xl border border-slate-200 bg-stone-50 p-6 text-center text-slate-500">
-              Prayer times temporarily unavailable. Please check back shortly.
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* ── Verse & Hadith ── */}
-      <section className="mx-auto max-w-7xl px-6 py-16 md:px-8 lg:py-20">
-        <div className="grid gap-6 lg:grid-cols-2">
-
-          {/* Quran verse */}
-          <div className="flex flex-col rounded-3xl border border-[#8ecae6]/40 bg-[#8ecae6]/10 p-8">
-            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#219ebc]">
-              Verse of the Day
-            </p>
-            {verse ? (
-              <>
-                <p
-                  dir="rtl"
-                  lang="ar"
-                  className="mt-5 text-right text-2xl leading-loose text-[#023047]"
-                  style={{ fontFamily: "'Amiri', 'Scheherazade New', serif" }}
-                >
-                  {verse.arabic}
-                </p>
-                <p className="mt-5 text-base italic leading-7 text-slate-700">
-                  &ldquo;{verse.translation}&rdquo;
-                </p>
-                <p className="mt-auto pt-5 text-sm font-medium text-[#219ebc]">
-                  — Surah {verse.surahName} ({verse.surahNumber}:{verse.ayahNumber})
-                </p>
-              </>
-            ) : (
-              <p className="mt-4 text-sm text-slate-500">
-                Verse unavailable — please check back shortly.
-              </p>
-            )}
-          </div>
-
-          {/* Hadith */}
-          <div className="flex flex-col rounded-3xl border border-amber-100 bg-amber-50 p-8">
-            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-amber-700">
-              Hadith of the Day
-            </p>
-            {hadith ? (
-              <>
-                <blockquote className="mt-5 line-clamp-6 text-base italic leading-8 text-slate-700">
-                  &ldquo;{hadith.text}&rdquo;
-                </blockquote>
-                <p className="mt-auto pt-5 text-sm font-medium text-amber-700">
-                  — {hadith.source}
-                </p>
-              </>
-            ) : (
-              <p className="mt-4 text-sm text-slate-500">
-                Hadith unavailable — please check back shortly.
-              </p>
-            )}
-          </div>
-
-        </div>
-      </section>
+      <LiveDailyContent />
 
       {/* ── Events ── */}
       <section id="events" className="border-t border-slate-100 bg-white">
