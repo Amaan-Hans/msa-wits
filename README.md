@@ -24,7 +24,7 @@ This platform serves as the central hub for the MSA, providing students with acc
 
 Clone the repository:
 
-git clone https://github.com/YOUR_USERNAME/msa-wits.git
+git clone https://github.com/Amaan-Hans/msa-wits.git
 cd msa-wits
 
 Install dependencies:
