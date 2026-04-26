@@ -3,34 +3,6 @@ import type { EventData } from "../components/EventAccordion";
 
 const upcomingEvents: EventData[] = [
   {
-    title: "JoBurg Sumud Action Group — Meet & Greet Send-Off",
-    category: "Community · Palestine Solidarity",
-    day: "27",
-    month: "APR",
-    year: "2026",
-    dayOfWeek: "Monday",
-    publicHoliday: "Freedom Day",
-    time: "3:00 PM",
-    venue: "Impala Crescent School",
-    address: "19 Mandrill Street, Lenasia",
-    contact: { name: "Naazim", email: "info@palestinesa.co.za" },
-    intro:
-      "You're warmly welcomed to join the JoBurg Sumud Action — a local part of the Global Sumud Flotilla (GSF-SA) initiative to support our communities and delegates.",
-    body:
-      "We're hosting a special send-off to meet our local delegates who will be sailing with the Flotilla and joining the Land Convoy, as well as some of our dedicated GSF ground crew.",
-    expect: [
-      "Quick introductions of our Sumud delegates, community representatives, and the GSF support team.",
-      "A discussion on how we can build support and amplify the Palestine Solidarity Movement together.",
-      "A conversation on Freedom, Justice and Equality in the wake of Genocide: What does the future hold?",
-    ],
-    notes: [
-      "This is not a public meeting. For the safety of our delegates, their names will not be released to the media until they are assuredly safe on the boats.",
-      "Should you wish to invite trusted community activists, friends, and family to this send-off, please let the organisers know.",
-      "Donations for the mission are welcomed. Let's break the siege.",
-      "Light refreshments (tea) will be available. Please confirm attendance with the contact below.",
-    ],
-  },
-  {
     title: "Palestine Informal Picnic",
     category: "Community · Palestine Solidarity",
     day: "30",
