@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { CardCarousel } from "./components/CardCarousel";
 import { LiveIslamicDate } from "./components/LiveIslamicDate";
 import { LivePrayerTimes } from "./components/LivePrayerTimes";
@@ -45,7 +46,7 @@ export default function HomePage() {
 
   const partnerOrgs = [
     {
-      name: "Palestine Solidarity Society – Wits",
+      name: "Palestine Solidarity Committee – Wits",
       description: "Advocating for Palestinian rights on campus.",
       href: "#",
     },
@@ -63,6 +64,11 @@ export default function HomePage() {
       name: "SA Students Congress (SASCO)",
       description: "Progressive student movement active on campus.",
       href: "#",
+    },
+    {
+      name: "Jamiatul Ulama South Africa",
+      description: "A leading Islamic scholarly body providing religious guidance and community services across South Africa.",
+      href: "https://www.jamiatsa.org/",
     },
   ];
 
@@ -130,20 +136,37 @@ export default function HomePage() {
             <div className="flex flex-col gap-4 lg:min-w-[240px]">
               <LiveIslamicDate />
 
-              <div className="rounded-3xl border border-white/15 bg-white/10 p-6 backdrop-blur">
+              {/* Jumu'ah card — whole card → /musalla, location text → Google Maps */}
+              <div className="relative rounded-3xl border border-white/15 bg-white/10 p-6 backdrop-blur transition hover:bg-white/20">
+                <Link href="/musalla" className="absolute inset-0 rounded-3xl" aria-label="Go to Musalla page" />
                 <p className="text-xs font-semibold uppercase tracking-widest text-[#8ecae6]">
                   Jumu&apos;ah
                 </p>
                 <p className="mt-2 text-xl font-semibold text-white">1:15 PM</p>
-                <p className="mt-1 text-sm text-[#8ecae6]/80">Wits Musalla, East Campus</p>
+                <a
+                  href="https://www.google.com/maps/place/Wits+Musalla/@-26.1883634,28.0287288,241m/data=!3m1!1e3!4m6!3m5!1s0x1e950c0fcba25889:0x8375c9b2bbb1c36e!8m2!3d-26.1883663!4d28.0291218!16s%2Fg%2F1pyqvcpct"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="relative z-10 mt-1 block text-sm text-[#8ecae6]/80 hover:text-white hover:underline"
+                >
+                  Wits Musalla, East Campus
+                </a>
               </div>
 
+              {/* Prayer Space card — location text → Google Maps */}
               <div className="rounded-3xl border border-white/15 bg-white/10 p-6 backdrop-blur">
                 <p className="text-xs font-semibold uppercase tracking-widest text-[#8ecae6]">
                   Prayer Space
                 </p>
                 <p className="mt-2 text-xl font-semibold text-white">Open Daily</p>
-                <p className="mt-1 text-sm text-[#8ecae6]/80">Wits Musalla, East Campus</p>
+                <a
+                  href="https://www.google.com/maps/place/Wits+Musalla/@-26.1883634,28.0287288,241m/data=!3m1!1e3!4m6!3m5!1s0x1e950c0fcba25889:0x8375c9b2bbb1c36e!8m2!3d-26.1883663!4d28.0291218!16s%2Fg%2F1pyqvcpct"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-1 block text-sm text-[#8ecae6]/80 hover:text-white hover:underline"
+                >
+                  Wits Musalla, East Campus
+                </a>
               </div>
             </div>
           </div>
@@ -268,7 +291,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
             {/* Instagram */}
             <a
               href="https://www.instagram.com/msa_wits/"
@@ -323,6 +346,20 @@ export default function HomePage() {
               </svg>
               <span className="mt-4 text-xl font-semibold">WhatsApp</span>
               <span className="mt-1 text-sm opacity-80">Join our group</span>
+            </a>
+
+            {/* TikTok */}
+            <a
+              href="https://www.tiktok.com/@msa_wits"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex flex-col items-center rounded-3xl bg-gradient-to-br from-slate-800 to-slate-950 p-8 text-white transition hover:-translate-y-1 hover:shadow-2xl hover:shadow-black/30"
+            >
+              <svg className="h-10 w-10" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.73a8.27 8.27 0 004.84 1.56V6.84a4.85 4.85 0 01-1.07-.15z"/>
+              </svg>
+              <span className="mt-4 text-xl font-semibold">TikTok</span>
+              <span className="mt-1 text-sm opacity-80">@msa_wits</span>
             </a>
           </div>
 

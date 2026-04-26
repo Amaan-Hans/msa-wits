@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 export interface CardData {
   title: string;
@@ -10,42 +10,49 @@ export interface CardData {
   gradient: string;
 }
 
-/*
-  Layout maths (all in px):
-    CARD_W  = 320   (w-80)
-    GAP     = 20    (gap-5)
-    STEP    = 340   (one scroll tick)
-    VISIBLE = 3 cards = 3×320 + 2×20 = 1000
-    PEEK    = space reserved on each side for the faded neighbours
-    CONTAINER = VISIBLE + 2×PEEK = 1000 + 156 = 1156
-
-  translateX = PEEK − idx × STEP
-  This centres the active 3 cards and lets one card peek on each side.
-*/
+// Desktop constants
 const CARD_W = 320;
 const GAP = 20;
-const STEP = CARD_W + GAP;   // 340
-const PEEK = 78;              // (1156 − 1000) / 2
+const STEP = CARD_W + GAP;
+const PEEK = 78;
 const CONTAINER_W = 3 * CARD_W + 2 * GAP + 2 * PEEK; // 1156
 
 export function CardCarousel({ cards }: { cards: CardData[] }) {
-  const MAX_IDX = Math.max(0, cards.length - 3);
   const [idx, setIdx] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+  const [mobileCardW, setMobileCardW] = useState(280);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  const tx = PEEK - idx * STEP;
+  useEffect(() => {
+    const update = () => {
+      const w = containerRef.current?.offsetWidth ?? window.innerWidth;
+      const mobile = w < 640;
+      setIsMobile(mobile);
+      if (mobile) setMobileCardW(Math.min(320, w - 72)); // 36px each side for arrows
+    };
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, []);
+
+  const maxIdx = isMobile ? cards.length - 1 : Math.max(0, cards.length - 3);
+
+  // Clamp idx when switching breakpoints
+  useEffect(() => {
+    if (idx > maxIdx) setIdx(maxIdx);
+  }, [maxIdx, idx]);
+
+  const mobilePeek = 36;
+  const mobileStep = mobileCardW + GAP;
+  const tx = isMobile
+    ? mobilePeek - idx * mobileStep
+    : PEEK - idx * STEP;
 
   return (
-    /*
-      outer: clips left/right via overflow-hidden, but is tall enough
-             (pt-6 headroom) that the hover-lift is never clipped on top.
-      We do NOT use overflow-hidden on the Y axis so the lifted card shadow
-      and translation are fully visible — overflow:hidden applies to both axes,
-      but because the inner div adds pt-6 (24 px) the card's lifted position
-      (max 12 px) stays inside the container boundary.
-    */
     <div
+      ref={containerRef}
       className="relative mx-auto overflow-hidden"
-      style={{ maxWidth: CONTAINER_W }}
+      style={{ maxWidth: isMobile ? '100%' : CONTAINER_W }}
     >
       {/* Sliding strip */}
       <div
@@ -53,12 +60,14 @@ export function CardCarousel({ cards }: { cards: CardData[] }) {
         style={{ transform: `translateX(${tx}px)`, width: 'max-content' }}
       >
         {cards.map((card, i) => {
-          const active = i >= idx && i < idx + 3;
+          const active = isMobile ? i === idx : (i >= idx && i < idx + 3);
           return (
             <article
               key={card.title}
+              style={isMobile ? { width: mobileCardW } : undefined}
               className={[
-                'relative flex h-72 w-80 flex-none overflow-hidden rounded-3xl shadow-lg',
+                'relative flex h-72 flex-none overflow-hidden rounded-3xl shadow-lg',
+                isMobile ? '' : 'w-80',
                 `bg-gradient-to-br ${card.gradient}`,
                 'transition-all duration-300 group',
                 active
@@ -96,11 +105,11 @@ export function CardCarousel({ cards }: { cards: CardData[] }) {
         })}
       </div>
 
-      {/* Left arrow — sits over the dimmed left card */}
+      {/* Left arrow */}
       {idx > 0 && (
         <button
           onClick={() => setIdx(i => Math.max(0, i - 1))}
-          className="absolute left-4 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 shadow-lg shadow-black/20 backdrop-blur transition hover:scale-110 hover:bg-white"
+          className="absolute left-2 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 shadow-lg shadow-black/20 backdrop-blur transition hover:scale-110 hover:bg-white"
           aria-label="Previous"
         >
           <svg className="h-5 w-5 text-[#023047]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -109,17 +118,31 @@ export function CardCarousel({ cards }: { cards: CardData[] }) {
         </button>
       )}
 
-      {/* Right arrow — sits over the dimmed right card */}
-      {idx < MAX_IDX && (
+      {/* Right arrow */}
+      {idx < maxIdx && (
         <button
-          onClick={() => setIdx(i => Math.min(MAX_IDX, i + 1))}
-          className="absolute right-4 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 shadow-lg shadow-black/20 backdrop-blur transition hover:scale-110 hover:bg-white"
+          onClick={() => setIdx(i => Math.min(maxIdx, i + 1))}
+          className="absolute right-2 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 shadow-lg shadow-black/20 backdrop-blur transition hover:scale-110 hover:bg-white"
           aria-label="Next"
         >
           <svg className="h-5 w-5 text-[#023047]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
           </svg>
         </button>
+      )}
+
+      {/* Mobile dot indicators */}
+      {isMobile && (
+        <div className="flex justify-center gap-1.5 pb-2">
+          {cards.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setIdx(i)}
+              className={`h-1.5 rounded-full transition-all ${i === idx ? 'w-5 bg-[#219ebc]' : 'w-1.5 bg-slate-300'}`}
+              aria-label={`Go to card ${i + 1}`}
+            />
+          ))}
+        </div>
       )}
     </div>
   );

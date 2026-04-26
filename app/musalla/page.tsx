@@ -7,14 +7,6 @@ const musalla = {
   hours: "Request card access to enter the facility",
   notes:
     "The central prayer space for all Muslim students on campus. All MSA programmes start here.",
-  features: [
-    "Men's entrance on the left",
-    "Women's entrance on the right",
-    "Separate prayer sections for brothers and sisters",
-    "Wudhu facilities on-site",
-    "Qur'an and prayer resources available",
-    "Air-conditioned",
-  ],
 };
 
 const dosList = [
@@ -58,11 +50,6 @@ const facilityRules = [
   { label: "Disclaimer", detail: "The MSA Musalla is not liable for any personal damages, injuries, or stolen items. Please take care of your belongings and exercise caution." },
 ];
 
-const jumuah = {
-  time: "1:15 PM",
-  location: "Wits Musalla, East Campus",
-  khateeb: "Rotating speakers — check Instagram for weekly announcements",
-};
 
 export default function MusallahPage() {
   return (
@@ -80,6 +67,9 @@ export default function MusallahPage() {
             Prayer spaces available to all Muslim students across Wits main campus.
             Maintained by the MSA Musalla Committee.
           </p>
+          <p className="mt-2 text-sm text-[#8ecae6]">
+            Scroll down for directions and campus location.
+          </p>
         </div>
       </section>
 
@@ -90,31 +80,53 @@ export default function MusallahPage() {
             Every Friday
           </p>
           <h2 className="mt-2 text-2xl font-semibold text-slate-900">Jumu&apos;ah Salaah</h2>
+          <p className="mt-1 text-sm text-slate-500">Wits Musalla, East Campus · Khateeb rotates weekly — check Instagram for announcements</p>
 
-          <div className="mt-6 grid gap-4 sm:grid-cols-3">
-            <div className="rounded-2xl border border-[#8ecae6]/30 bg-[#8ecae6]/10 p-5">
-              <p className="text-xs font-semibold uppercase tracking-widest text-[#219ebc]">Time</p>
-              <p className="mt-2 text-2xl font-bold text-[#023047]">{jumuah.time}</p>
+          <div className="mt-6 grid gap-5 lg:grid-cols-2">
+            {/* 1st Jamaat */}
+            <div className="rounded-3xl border border-[#8ecae6]/40 bg-[#8ecae6]/10 p-6">
+              <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[#219ebc]">1st Jamaat</p>
+              <div className="mt-4 space-y-2">
+                {[
+                  { label: "Adhaan", time: "12:30" },
+                  { label: "Lecture", time: "after Adhaan" },
+                  { label: "Sunnah", time: "12:55" },
+                  { label: "Khutbah", time: "13:00" },
+                ].map(({ label, time }) => (
+                  <div key={label} className="flex items-center justify-between rounded-xl bg-white/60 px-4 py-2.5">
+                    <span className="text-sm font-medium text-slate-700">{label}</span>
+                    <span className="text-sm font-bold text-[#023047]">{time}</span>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div className="rounded-2xl border border-[#8ecae6]/30 bg-[#8ecae6]/10 p-5">
-              <p className="text-xs font-semibold uppercase tracking-widest text-[#219ebc]">Location</p>
-              <p className="mt-2 text-sm font-semibold text-[#023047] leading-6">{jumuah.location}</p>
-            </div>
-            <div className="rounded-2xl border border-[#8ecae6]/30 bg-[#8ecae6]/10 p-5">
-              <p className="text-xs font-semibold uppercase tracking-widest text-[#219ebc]">Khateeb</p>
-              <p className="mt-2 text-sm text-slate-600 leading-6">{jumuah.khateeb}</p>
+
+            {/* 2nd Jamaat */}
+            <div className="rounded-3xl border border-[#023047]/20 bg-[#023047]/5 p-6">
+              <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[#023047]">2nd Jamaat</p>
+              <div className="mt-4 space-y-2">
+                {[
+                  { label: "Adhaan", time: "13:20" },
+                  { label: "Sunnah", time: "after Adhaan" },
+                  { label: "Lecture", time: "13:25" },
+                  { label: "Khutbah", time: "13:45" },
+                ].map(({ label, time }) => (
+                  <div key={label} className="flex items-center justify-between rounded-xl bg-white/60 px-4 py-2.5">
+                    <span className="text-sm font-medium text-slate-700">{label}</span>
+                    <span className="text-sm font-bold text-[#023047]">{time}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
-          {/* Important notices */}
-          <div className="mt-5 flex flex-col gap-3 sm:flex-row">
-            <div className="flex items-start gap-3 rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm text-amber-800 sm:flex-1">
-              <span className="mt-0.5 text-base">📢</span>
-              <p>
-                <span className="font-semibold">MSA-Organised Only:</span> All Jumu&apos;ah on campus are organised exclusively by the MSA.
-                During holidays and exam periods, only the <span className="font-semibold">1st Jumu&apos;ah Jamaat</span> will take place.
-              </p>
-            </div>
+          {/* Important notice */}
+          <div className="mt-5 flex items-start gap-3 rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm text-amber-800">
+            <span className="mt-0.5 text-base">📢</span>
+            <p>
+              <span className="font-semibold">MSA-Organised Only:</span> All Jumu&apos;ah on campus are organised exclusively by the MSA.
+              During holidays and exam periods, only the <span className="font-semibold">1st Jamaat</span> will take place.
+            </p>
           </div>
         </div>
       </section>
@@ -124,64 +136,91 @@ export default function MusallahPage() {
         <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#219ebc]">
           Prayer Space
         </p>
-        <h2 className="mt-2 text-3xl font-semibold tracking-tight text-slate-900">
+        <a
+          href={MAPS_LINK}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-2 inline-flex items-center gap-2 text-3xl font-semibold tracking-tight text-slate-900 hover:text-[#219ebc] transition-colors"
+        >
           Campus Location
-        </h2>
+          <svg className="h-6 w-6 text-[#219ebc]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+        </a>
 
         <div className="mt-8 grid gap-6 lg:grid-cols-2 lg:items-start">
-          {/* Info card */}
-          <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
-            <h3 className="text-xl font-semibold text-slate-900">{musalla.name}</h3>
-            <p className="mt-1 text-sm text-[#219ebc] font-medium">{musalla.address}</p>
-            <p className="mt-1 text-sm text-slate-500">{musalla.hours}</p>
-            <p className="mt-4 text-sm leading-7 text-slate-600">{musalla.notes}</p>
-            <ul className="mt-5 space-y-2">
-              {musalla.features.map((f) => (
-                <li key={f} className="flex items-start gap-2 text-sm text-slate-600">
-                  <span className="mt-0.5 h-4 w-4 flex-shrink-0 rounded-full bg-[#8ecae6]/30 text-[#219ebc] flex items-center justify-center text-[10px] font-bold">✓</span>
-                  {f}
-                </li>
-              ))}
-            </ul>
+          {/* Map embedded in the info card */}
+          <div className="rounded-3xl border border-slate-200 bg-white overflow-hidden shadow-sm">
             <a
               href={MAPS_LINK}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-6 inline-flex items-center gap-2 rounded-2xl bg-[#023047] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#219ebc]"
+              className="group relative block overflow-hidden"
+              aria-label="Open Wits Musalla in Google Maps"
             >
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
-              Open in Google Maps
+              <iframe
+                src="https://maps.google.com/maps?q=-26.1883663,28.0291218&z=18&output=embed"
+                width="100%"
+                height="300"
+                style={{ border: 0, display: "block" }}
+                allowFullScreen={false}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Wits Musalla location"
+              />
+              <div className="absolute inset-0 flex items-center justify-center bg-[#023047]/0 transition-colors duration-200 group-hover:bg-[#023047]/30">
+                <span className="scale-90 rounded-2xl bg-white px-4 py-2 text-sm font-semibold text-[#023047] opacity-0 shadow-lg transition-all duration-200 group-hover:scale-100 group-hover:opacity-100">
+                  Open in Google Maps
+                </span>
+              </div>
             </a>
+            <div className="p-6">
+              <h3 className="text-lg font-semibold text-slate-900">{musalla.name}</h3>
+              <p className="mt-1 text-sm text-[#219ebc] font-medium">{musalla.address}</p>
+              <p className="mt-1 text-sm text-slate-500">{musalla.hours}</p>
+              <p className="mt-3 text-sm leading-7 text-slate-600">{musalla.notes}</p>
+              <a
+                href={MAPS_LINK}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 inline-flex items-center gap-2 rounded-2xl bg-[#023047] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#219ebc]"
+              >
+                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                Open in Google Maps
+              </a>
+            </div>
           </div>
 
-          {/* Interactive map */}
-          <a
-            href={MAPS_LINK}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group relative block overflow-hidden rounded-3xl border border-slate-200 shadow-sm"
-            aria-label="Open Wits Musalla in Google Maps"
-          >
-            <iframe
-              src="https://maps.google.com/maps?q=-26.1883663,28.0291218&z=18&output=embed"
-              width="100%"
-              height="360"
-              style={{ border: 0, display: "block" }}
-              allowFullScreen={false}
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              title="Wits Musalla location"
-            />
-            {/* Overlay on hover */}
-            <div className="absolute inset-0 flex items-center justify-center bg-[#023047]/0 transition-colors duration-200 group-hover:bg-[#023047]/30">
-              <span className="scale-90 rounded-2xl bg-white px-4 py-2 text-sm font-semibold text-[#023047] opacity-0 shadow-lg transition-all duration-200 group-hover:scale-100 group-hover:opacity-100">
-                Open in Google Maps
-              </span>
-            </div>
-          </a>
+          {/* Access notice — right column */}
+          <div className="rounded-3xl border border-amber-200 bg-amber-50 p-8">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-600">
+              Action Required
+            </p>
+            <h3 className="mt-2 text-xl font-semibold text-amber-900">Musalla Access Records</h3>
+            <p className="mt-1 text-sm font-medium text-amber-700">
+              السلام عليكم ورحمة الله وبركاته
+            </p>
+            <p className="mt-4 text-sm leading-7 text-amber-800">
+              We are currently updating our access records. All students who require access are
+              requested to promptly complete the form.
+            </p>
+            <p className="mt-3 text-sm leading-7 text-amber-800">
+              Please ensure that your details are submitted as soon as possible.
+            </p>
+            <a
+              href="https://forms.gle/89TfsVygCZS5Hy4W7"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-6 inline-flex w-full items-center justify-center rounded-2xl bg-amber-700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-amber-800"
+            >
+              Complete Access Form →
+            </a>
+            <p className="mt-4 text-center text-sm text-amber-600">جزاكم الله خيرًا — MSA Wits Musalla Committee</p>
+          </div>
         </div>
       </section>
 

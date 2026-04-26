@@ -8,10 +8,12 @@ import { useState } from 'react';
 const links = [
   { label: 'Home', href: '/' },
   { label: 'Events', href: '/events' },
+  { label: "Da'wah", href: '/dawah' },
   { label: 'Musalla', href: '/musalla' },
   { label: 'Student Life', href: '/student-life' },
   { label: 'Meet the Team', href: '/meet-the-team' },
   { label: 'How to Join', href: '/how-to-join' },
+  
 ];
 
 export function Navbar() {

@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 interface Timings {
@@ -58,15 +59,16 @@ export function LivePrayerTimes() {
         {prayerTimes.length > 0 ? (
           <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
             {prayerTimes.map(({ name, time }) => (
-              <div
+              <Link
                 key={name}
-                className="rounded-2xl border border-slate-100 bg-stone-50 p-4 text-center"
+                href="/musalla"
+                className="rounded-2xl border border-slate-100 bg-stone-50 p-4 text-center transition hover:-translate-y-0.5 hover:border-[#8ecae6] hover:shadow-md"
               >
                 <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
                   {name}
                 </p>
                 <p className="mt-2 text-xl font-semibold text-slate-900">{time}</p>
-              </div>
+              </Link>
             ))}
           </div>
         ) : (

@@ -19,7 +19,7 @@ const steps = [
     number: "03",
     title: "Fill in the membership form",
     description:
-      "A short form that helps us keep track of our community. It takes under two minutes and lets us tailor programmes to what students actually need.",
+      "A short form that helps us keep track of our community. It takes under two minutes and allows you to support what we do.",
     link: null,
   },
   {

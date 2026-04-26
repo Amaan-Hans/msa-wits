@@ -1,49 +1,106 @@
-const upcomingEvents = [
+import { EventAccordion } from "../components/EventAccordion";
+import type { EventData } from "../components/EventAccordion";
+
+const upcomingEvents: EventData[] = [
   {
-    title: "Arabic Language Classes",
-    date: "Every Tuesday & Thursday",
-    time: "5:00 PM – 6:30 PM",
-    location: "MSA Room, Student Centre",
-    category: "Education",
-    description:
-      "Weekly Arabic classes open to all levels — from complete beginners to those looking to refine their reading and grammar.",
+    title: "JoBurg Sumud Action Group — Meet & Greet Send-Off",
+    category: "Community · Palestine Solidarity",
+    day: "27",
+    month: "APR",
+    year: "2026",
+    dayOfWeek: "Monday",
+    publicHoliday: "Freedom Day",
+    time: "3:00 PM",
+    venue: "Impala Crescent School",
+    address: "19 Mandrill Street, Lenasia",
+    contact: { name: "Naazim", email: "info@palestinesa.co.za" },
+    intro:
+      "You're warmly welcomed to join the JoBurg Sumud Action — a local part of the Global Sumud Flotilla (GSF-SA) initiative to support our communities and delegates.",
+    body:
+      "We're hosting a special send-off to meet our local delegates who will be sailing with the Flotilla and joining the Land Convoy, as well as some of our dedicated GSF ground crew.",
+    expect: [
+      "Quick introductions of our Sumud delegates, community representatives, and the GSF support team.",
+      "A discussion on how we can build support and amplify the Palestine Solidarity Movement together.",
+      "A conversation on Freedom, Justice and Equality in the wake of Genocide: What does the future hold?",
+    ],
+    notes: [
+      "This is not a public meeting. For the safety of our delegates, their names will not be released to the media until they are assuredly safe on the boats.",
+      "Should you wish to invite trusted community activists, friends, and family to this send-off, please let the organisers know.",
+      "Donations for the mission are welcomed. Let's break the siege.",
+      "Light refreshments (tea) will be available. Please confirm attendance with the contact below.",
+    ],
   },
   {
-    title: "Weekly Discussion Circle",
-    date: "Every Friday",
-    time: "5:30 PM – 7:00 PM",
-    location: "MSA Room, Student Centre",
-    category: "Spiritual",
-    description:
-      "An open discussion circle covering topics in Islamic knowledge, current affairs, and personal development from an Islamic perspective.",
+    title: "Palestine Informal Picnic",
+    category: "Community · Palestine Solidarity",
+    day: "30",
+    month: "APR",
+    year: "2026",
+    dayOfWeek: "Thursday",
+    time: "1:15 PM – 2:15 PM",
+    venue: "Library Lawns",
+    address: "Wits Main Campus, East Campus",
+    intro:
+      "An informal picnic on the Library Lawns to bring students together in solidarity with Palestine. Come as you are — no agenda, no formalities, just community.",
+    body:
+      "This is a space to have real, meaningful conversations about Palestine, to connect with fellow students who care, and to build the kind of community that sustains a movement. Bring your lunch and your voice.",
+    expect: [
+      "Open, facilitated conversation on Palestine and the current situation.",
+      "A chance to meet and connect with like-minded students on campus.",
+      "A relaxed, welcoming environment — all are welcome to join.",
+    ],
+    notes: [
+      "This is an informal gathering — no registration required, just show up.",
+      "Bring your own lunch. The lawns are open and shaded.",
+    ],
   },
   {
-    title: "Sisters' Circle",
-    date: "Every Wednesday",
-    time: "4:30 PM – 5:30 PM",
-    location: "Library Seminar Room",
-    category: "Community",
-    description:
-      "A safe, supportive space for sisters to connect, share, and grow together in faith and sisterhood.",
+    title: "Laudium Ijtima 2026",
+    category: "Religious · Tabligh",
+    day: "1",
+    dayRange: "1–3",
+    month: "MAY",
+    year: "2026",
+    dayOfWeek: "Friday",
+    dateLabel: "Fri 1 May (Jumu'ah) – Sun 3 May 2026",
+    venue: "Laudium Sports Stadium",
+    address: "Laudium, Pretoria, South Africa",
+    mapsLink: "https://maps.app.goo.gl/Nvz1NFDS9LvajpBL6",
+    cost: "R230 Ijtima voucher — includes all meals for the full period",
+    whatsappLink: {
+      label: "Join Da'wat & Tabligh Announcement Group",
+      href: "https://chat.whatsapp.com/EM9GTVcR2icHnpoBIAqqDc",
+    },
+    intro:
+      "The Laudium Ijtima 2026 covers Botswana, Lesotho, Swaziland, Gauteng, Free State, Limpopo, Mpumalanga, North West, and Northern Cape. The gathering begins with Jumu'ah Salaah on Friday 1 May and concludes on Sunday 3 May 2026.",
+    body:
+      "A Special Fikr in preparation for the Ijtima was held on Sunday 19 April at 8:30 AM at the Laudium Ijtima Site to prepare and finalise the 8 important Jamaats that function during the days of the Ijtima.",
+    expect: [
+      "Mashwera Jamaat of each Zone",
+      "Tashkeel Jamaat",
+      "Ikhtilaad Jamaat",
+      "Majma Jhor Jamaat",
+      "Istikbaal Jamaat",
+      "Ghidmat Jamaat of each feeding tent",
+      "Zikr and Du'a Jamaat",
+      "Hirasah Jamaat",
+    ],
+    notes: [
+      "Special request to all Ulema conducting Jumu'ah Bayaans to please inform about the forthcoming Ijtima.",
+      "Special request to all areas to make concerted efforts to invite to this important gathering.",
+      "Volunteers are welcome at the Ijtima Site.",
+      "For transport arrangements, please contact your responsible brothers at your local Musjid or area.",
+      "Please share with others — new members are welcome to join the Da'wat and Tabligh Announcement Group via the WhatsApp link below.",
+    ],
   },
   {
-    title: "Bayaan — Friday Reminder",
-    date: "Every Friday",
-    time: "After Jumu'ah",
-    location: "Main Campus Musalla",
-    category: "Lecture",
-    description:
-      "A short post-Jumu'ah talk delivered by a guest speaker or senior student. Topics vary weekly.",
+    title: "Annual MSA Braai",
+    category: "Social",
+    tba: true,
+    teaser:
+      "The Annual MSA Braai is coming — one of the most anticipated events of the year. Date, time, and venue will be announced soon. Stay tuned.",
   },
 ];
-
-const categoryColours: Record<string, string> = {
-  Education: "bg-blue-50 text-blue-700 border-blue-100",
-  Spiritual: "bg-[#8ecae6]/20 text-[#023047] border-[#8ecae6]/30",
-  Community: "bg-purple-50 text-purple-700 border-purple-100",
-  Lecture: "bg-amber-50 text-amber-700 border-amber-100",
-  Social: "bg-rose-50 text-rose-700 border-rose-100",
-};
 
 export default function EventsPage() {
   return (
@@ -58,42 +115,16 @@ export default function EventsPage() {
             Upcoming Events
           </h1>
           <p className="mt-4 max-w-xl text-base text-white/80">
-            Stay up to date with everything happening on campus. All events are open to
-            the wider student community.
+            Stay up to date with everything happening on campus and in the community. Tap any event to see full details.
           </p>
         </div>
       </section>
 
-      {/* Events list */}
+      {/* Events */}
       <section className="mx-auto max-w-7xl px-6 py-16 md:px-8">
         {upcomingEvents.length > 0 ? (
-          <div className="flex flex-col gap-5">
-            {upcomingEvents.map((event) => (
-              <article
-                key={event.title}
-                className="flex flex-col gap-4 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:flex-row sm:items-start sm:gap-8"
-              >
-                {/* Category pill */}
-                <div className="sm:pt-1">
-                  <span
-                    className={`inline-flex rounded-full border px-3 py-1 text-xs font-semibold ${categoryColours[event.category] ?? "bg-slate-100 text-slate-700 border-slate-200"}`}
-                  >
-                    {event.category}
-                  </span>
-                </div>
-
-                <div className="flex-1">
-                  <h2 className="text-xl font-semibold text-slate-900">{event.title}</h2>
-                  <p className="mt-1 text-sm text-slate-500">
-                    {event.date} &middot; {event.time} &middot; {event.location}
-                  </p>
-                  <p className="mt-3 text-sm leading-7 text-slate-600">{event.description}</p>
-                </div>
-              </article>
-            ))}
-          </div>
+          <EventAccordion events={upcomingEvents} />
         ) : (
-          /* ── Filler when no events ── */
           <div className="flex flex-col items-center gap-5 rounded-3xl border border-slate-200 bg-white px-8 py-20 text-center shadow-sm">
             <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#8ecae6]/20">
               <svg className="h-8 w-8 text-[#219ebc]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -104,12 +135,7 @@ export default function EventsPage() {
               <h2 className="text-xl font-semibold text-slate-900">Nothing scheduled yet</h2>
               <p className="mt-2 max-w-sm text-sm leading-7 text-slate-500">
                 We&apos;re still planning the next round of events. Follow us on Instagram{" "}
-                <a
-                  href="https://www.instagram.com/msa_wits/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-medium text-[#219ebc] hover:underline"
-                >
+                <a href="https://www.instagram.com/msa_wits/" target="_blank" rel="noopener noreferrer" className="font-medium text-[#219ebc] hover:underline">
                   @msa_wits
                 </a>{" "}
                 or join our WhatsApp group to be the first to know.
