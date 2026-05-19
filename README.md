@@ -2,7 +2,7 @@
 
 The official website for the Muslim Student Association (MSA) at the University of the Witwatersrand, Johannesburg. Built and maintained by Amaan Hanslod.
 
-**Live site:** [msa-wits.netlify.app/](https://msa-wits.netlify.app/) 
+**Live site:** [msa-wits.netlify.app/](https://wits-msa.netlify.app/) 
 
 ---
 
